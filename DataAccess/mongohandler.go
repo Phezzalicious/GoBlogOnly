@@ -39,11 +39,12 @@ func (db *MongoDb) Create(b BlogPost) interface{} {
 		log.Fatal(err)
 	}
 	defer client.Disconnect(ctx)
+	fmt.Println(b)
 	blogResult, err := postsCollection.InsertOne(ctx, bson.D{
 		{Key: "title", Value: string(b.Title)},
-		{Key: "topic", Value: b.Topic},
-		{Key: "author", Value: b.Author},
-		{Key: "body", Value: b.Body},
+		{Key: "topic", Value: string(b.Topic)},
+		{Key: "author", Value: string(b.Author)},
+		{Key: "body", Value: string(b.Body)},
 	})
 	if err != nil {
 		log.Fatal(err)
