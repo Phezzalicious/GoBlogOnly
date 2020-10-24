@@ -19,6 +19,9 @@ type user struct {
 	UserName string
 	First    string
 	Last     string
+	Title string
+	Heading string
+	Message string
 }
 var dbUsers = map[string]user{}      // user ID, user
 var dbSessions = map[string]string{} // session ID, user ID
@@ -128,10 +131,7 @@ type indexStruct struct {
 }
 
 func (env *Env) IndexHandler(w http.ResponseWriter, r *http.Request) {
-	//p := indexStruct{"Home","Home","I am home"}
-
-
-
+	p := indexStruct{"Home","Home","I am home"}
 	// get cookie
 	c, err := r.Cookie("session")
 	if err != nil {
@@ -154,11 +154,11 @@ func (env *Env) IndexHandler(w http.ResponseWriter, r *http.Request) {
 		un := r.FormValue("username")
 		f := r.FormValue("firstname")
 		l := r.FormValue("lastname")
-		u = user{un, f, l,}
+		u = user{un, f, l,p.Title,p.Heading,p.Message}
 		dbSessions[c.Value] = un
 		dbUsers[un] = u
 	}
-
+	
 	tpl.ExecuteTemplate(w, "index.gohtml", u)
 }
 
